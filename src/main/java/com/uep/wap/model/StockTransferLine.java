@@ -8,50 +8,37 @@ public class StockTransferLine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-
-    @Column(name = "transfer_id")
-    private Long transferId;
-
-    @Column(name = "product_id")
-    private Long productId;
 
     @Column(name = "quantity")
     private Integer quantity;
 
+    @ManyToOne
+    @JoinColumn(name = "transfer_id")
+    private StockTransfer transfer;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
     public StockTransferLine() {}
 
-    public StockTransferLine(Long transferId, Long productId, Integer quantity) {
-        this.transferId = transferId;
-        this.productId = productId;
+    public StockTransferLine(Integer quantity, StockTransfer transfer, Product product) {
         this.quantity = quantity;
+        this.transfer = transfer;
+        this.product = product;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getTransferId() {
-        return transferId;
-    }
+    public Integer getQuantity() { return quantity; }
+    public void setQuantity(Integer quantity) { this.quantity = quantity; }
 
-    public void setTransferId(Long transferId) {
-        this.transferId = transferId;
-    }
+    public StockTransfer getTransfer() { return transfer; }
+    public void setTransfer(StockTransfer transfer) { this.transfer = transfer; }
 
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
+    public Product getProduct() { return product; }
+    public void setProduct(Product product) { this.product = product; }
 }

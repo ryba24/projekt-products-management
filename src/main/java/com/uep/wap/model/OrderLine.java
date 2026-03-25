@@ -3,78 +3,56 @@ package com.uep.wap.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="order_line")
+@Table(name = "order_lines")
 public class OrderLine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="id")
-    private long id;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name ="order_id")
-    private Long orderId;
-
-    @Column(name ="product_id")
-    private Long productId;
-
-    @Column(name ="quantity")
+    @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name ="unit_price")
+    @Column(name = "unit_price")
     private Double unitPrice;
 
-    @Column(name ="total")
-    private Double total;
+    @Column(name = "subtotal")
+    private Double subtotal;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     public OrderLine() {}
 
-    public OrderLine(Long orderId, Long productId, Integer quantity, Double unitPrice, Double total) {}
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
+    public OrderLine(Integer quantity, Double unitPrice, Double subtotal, Order order, Product product) {
         this.quantity = quantity;
-    }
-
-    public Double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
+        this.subtotal = subtotal;
+        this.order = order;
+        this.product = product;
     }
 
-    public Double getTotal() {
-        return total;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setTotal(Double total) {
-        this.total = total;
-    }
+    public Integer getQuantity() { return quantity; }
+    public void setQuantity(Integer quantity) { this.quantity = quantity; }
+
+    public Double getUnitPrice() { return unitPrice; }
+    public void setUnitPrice(Double unitPrice) { this.unitPrice = unitPrice; }
+
+    public Double getSubtotal() { return subtotal; }
+    public void setSubtotal(Double subtotal) { this.subtotal = subtotal; }
+
+    public Order getOrder() { return order; }
+    public void setOrder(Order order) { this.order = order; }
+
+    public Product getProduct() { return product; }
+    public void setProduct(Product product) { this.product = product; }
 }

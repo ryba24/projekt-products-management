@@ -2,91 +2,65 @@ package com.uep.wap.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name="orders")
+@Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="id")
-    private long id;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name ="order_number")
-    private String orderNumber;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "order_date")
+    private Date orderDate;
 
-    @Column(name ="customer_id")
-    private Long customerId;
-
-    @Column(name ="status")
+    @Column(name = "status")
     private String status;
 
-    @Column(name ="created_at")
-    private Date createdAt;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_status")
+    private PaymentStatus paymentStatus;
 
-    @Column(name ="updated_at")
-    private Date updatedAt;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private User customer;
 
-    @Column(name ="total_amount")
-    private Double totalAmount;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderLine> orderLines;
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Invoice invoice;
 
     public Order() {}
 
-    public Order(String orderNumber, Long customerId, String status, Date createdAt, Double totalAmount) {}
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
+    public Order(Date orderDate, String status, PaymentStatus paymentStatus, User customer) {
+        this.orderDate = orderDate;
         this.status = status;
+        this.paymentStatus = paymentStatus;
+        this.customer = customer;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
+    public Date getOrderDate() { return orderDate; }
+    public void setOrderDate(Date orderDate) { this.orderDate = orderDate; }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    public PaymentStatus getPaymentStatus() { return paymentStatus; }
+    public void setPaymentStatus(PaymentStatus paymentStatus) { this.paymentStatus = paymentStatus; }
 
-    public Double getTotalAmount() {
-        return totalAmount;
-    }
+    public User getCustomer() { return customer; }
+    public void setCustomer(User customer) { this.customer = customer; }
 
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
+    public List<OrderLine> getOrderLines() { return orderLines; }
+    public void setOrderLines(List<OrderLine> orderLines) { this.orderLines = orderLines; }
+
+    public Invoice getInvoice() { return invoice; }
+    public void setInvoice(Invoice invoice) { this.invoice = invoice; }
 }

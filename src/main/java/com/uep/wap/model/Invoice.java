@@ -1,74 +1,45 @@
 package com.uep.wap.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name="invoice")
+@Table(name = "invoices")
 public class Invoice {
+
     @Id
-    @Column(name ="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//
-    private long id;
-    @Column(name ="invoiceAmount")
-    private long invoiceAmount;
-    @Column(name ="invoiceNumber")
-    private String invoiceNumber;
-    @Column(name ="issueDate")
-    private String issueDate;
-    @Column(name ="PaymentStatus")
-    private String PaymentStatus;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-    public Invoice(){
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "issue_date")
+    private Date issueDate;
 
-    }
+    @Column(name = "total_amount")
+    private Double totalAmount;
 
-    public Invoice(long id, long invoiceAmount, String invoiceNumber, String issueDate, String paymentStatus) {
-        this.id = id;
-        this.invoiceAmount = invoiceAmount;
-        this.invoiceNumber = invoiceNumber;
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    public Invoice() {}
+
+    public Invoice(Date issueDate, Double totalAmount, Order order) {
         this.issueDate = issueDate;
-        PaymentStatus = paymentStatus;
+        this.totalAmount = totalAmount;
+        this.order = order;
     }
 
-    public void setId(long id){
-        this.id = id;
-    }
-    public long getId(){
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public long getInvoiceAmount() {
-        return invoiceAmount;
-    }
+    public Date getIssueDate() { return issueDate; }
+    public void setIssueDate(Date issueDate) { this.issueDate = issueDate; }
 
-    public void setInvoiceAmount(long invoiceAmount) {
-        this.invoiceAmount = invoiceAmount;
-    }
+    public Double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(Double totalAmount) { this.totalAmount = totalAmount; }
 
-    public String getIssueDate() {
-        return issueDate;
-    }
-
-    public void setIssueDate(String issueDate) {
-        this.issueDate = issueDate;
-    }
-
-    public String getPaymentStatus() {
-        return PaymentStatus;
-    }
-
-    public void setPaymentStatus(String paymentStatus) {
-        PaymentStatus = paymentStatus;
-    }
-
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
-
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
-
+    public Order getOrder() { return order; }
+    public void setOrder(Order order) { this.order = order; }
 }
-
-

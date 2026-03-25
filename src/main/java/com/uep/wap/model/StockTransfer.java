@@ -2,6 +2,7 @@ package com.uep.wap.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "stock_transfers")
@@ -9,75 +10,59 @@ public class StockTransfer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "from_warehouse_id")
-    private Long fromWarehouseId;
+    @ManyToOne
+    @JoinColumn(name = "from_warehouse_id")
+    private Warehouse fromWarehouse;
 
-    @Column(name = "to_warehouse_id")
-    private Long toWarehouseId;
+    @ManyToOne
+    @JoinColumn(name = "to_warehouse_id")
+    private Warehouse toWarehouse;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private TransferStatus status;
 
-    @Column(name = "requested_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "requested_at")
     private Date requestedAt;
 
-    @Column(name = "approved_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "approved_at")
     private Date approvedAt;
+
+    @OneToMany(mappedBy = "transfer", cascade = CascadeType.ALL)
+    private List<StockTransferLine> lines;
 
     public StockTransfer() {}
 
-    public StockTransfer(Long fromWarehouseId, Long toWarehouseId, TransferStatus status, Date requestedAt) {
-        this.fromWarehouseId = fromWarehouseId;
-        this.toWarehouseId = toWarehouseId;
+    public StockTransfer(Warehouse fromWarehouse, Warehouse toWarehouse, TransferStatus status, Date requestedAt) {
+        this.fromWarehouse = fromWarehouse;
+        this.toWarehouse = toWarehouse;
         this.status = status;
         this.requestedAt = requestedAt;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getFromWarehouseId() {
-        return fromWarehouseId;
-    }
+    public Warehouse getFromWarehouse() { return fromWarehouse; }
+    public void setFromWarehouse(Warehouse fromWarehouse) { this.fromWarehouse = fromWarehouse; }
 
-    public void setFromWarehouseId(Long fromWarehouseId) {
-        this.fromWarehouseId = fromWarehouseId;
-    }
+    public Warehouse getToWarehouse() { return toWarehouse; }
+    public void setToWarehouse(Warehouse toWarehouse) { this.toWarehouse = toWarehouse; }
 
-    public Long getToWarehouseId() {
-        return toWarehouseId;
-    }
+    public TransferStatus getStatus() { return status; }
+    public void setStatus(TransferStatus status) { this.status = status; }
 
-    public void setToWarehouseId(Long toWarehouseId) {
-        this.toWarehouseId = toWarehouseId;
-    }
+    public Date getRequestedAt() { return requestedAt; }
+    public void setRequestedAt(Date requestedAt) { this.requestedAt = requestedAt; }
 
-    public TransferStatus getStatus() {
-        return status;
-    }
+    public Date getApprovedAt() { return approvedAt; }
+    public void setApprovedAt(Date approvedAt) { this.approvedAt = approvedAt; }
 
-    public void setStatus(TransferStatus status) {
-        this.status = status;
-    }
-
-    public Date getRequestedAt() {
-        return requestedAt;
-    }
-
-    public void setRequestedAt(Date requestedAt) {
-        this.requestedAt = requestedAt;
-    }
-
-    public Date getApprovedAt() {
-        return approvedAt;
-    }
-
-    public void setApprovedAt(Date approvedAt) {
-        this.approvedAt = approvedAt;
-    }
+    public List<StockTransferLine> getLines() { return lines; }
+    public void setLines(List<StockTransferLine> lines) { this.lines = lines; }
 }
