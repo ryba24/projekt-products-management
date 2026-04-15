@@ -13,7 +13,6 @@ public class StudentsService {
 
     @Autowired
     private StudentRepository studentRepository;
-
     public void addStudent(StudentDTO studentDTO) {
         Student student = new Student();
         student.setName(studentDTO.getName());
@@ -22,8 +21,6 @@ public class StudentsService {
         System.out.println("Students added!");
     }
 
-    public Iterable<Student> getAllStudents() {
-        return studentRepository.findAll();
-    }
+    public Iterable<Student> getAllStudents() { return studentRepository.findAll(); }
 
 }

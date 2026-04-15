@@ -16,8 +16,7 @@ public class StudentController {
         this.studentsService = studentsService;
     }
 
-    @GetMapping(path = "/hello")
-    public String sayHello(){
+    @GetMapping(path = "/hello")    public String sayHello(){
         return "Hello!";
     }
 
