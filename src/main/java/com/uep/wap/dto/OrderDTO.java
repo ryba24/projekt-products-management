@@ -18,20 +18,54 @@ public class OrderDTO {
     private List<OrderLine> orderLines;
     private Invoice invoice;
 
-    public Date getOrderDate() { return orderDate; }
 
-    public String getStatus() { return status; }
+    public Date getOrderDate() {
+        return orderDate;
+    }
 
-    public PaymentStatus getPaymentStatus() { return paymentStatus; }
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
 
-    public User getCustomer() { return customer; }
+    public String getStatus() {
+        return status;
+    }
 
-    public List<OrderLine> getOrderLines() { return orderLines; }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-    public Invoice getInvoice() { return invoice; }
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
 
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
 
+    public User getCustomer() {
+        return customer;
+    }
 
+    public void setCustomer(User customer) {
+        this.customer = customer;
+    }
+
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+
+    public void setOrderLines(List<OrderLine> orderLines) {
+        this.orderLines = orderLines;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
 }
 
 

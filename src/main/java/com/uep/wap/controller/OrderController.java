@@ -1,33 +1,25 @@
 package com.uep.wap.controller;
 
-import com.uep.wap.dto.StudentDTO;
-import com.uep.wap.model.Student;
-import com.uep.wap.service.StudentsService;
+import com.uep.wap.dto.OrderDTO;
+import com.uep.wap.model.Order;
+import com.uep.wap.model.Order;
+import com.uep.wap.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api")
 public class OrderController {
 
-    private final StudentsService studentsService;
+    private final OrderService orderService;
 
-    public OrderController(StudentsService studentsService) {
-        this.studentsService = studentsService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
-    @GetMapping(path = "/hello")
-    public String sayHello(){
-        return "Hello!";
+    @GetMapping(path = "/orders")
+    public Iterable<Order> getAllOrders(){
+        return orderService.getAllOrders();
     }
 
-    @GetMapping(path = "/students")
-    public Iterable<Student> getAllStudents(){
-        return studentsService.getAllStudents();
-    }
 
-    @PostMapping(path = "/students")
-    public String addStudents(@RequestBody StudentDTO studentDTO){
-        studentsService.addStudent(studentDTO);
-        return "Students added!";
-    }
 }

@@ -2,6 +2,7 @@ package com.uep.wap.service;
 
 import com.uep.wap.dto.OrderDTO;
 import com.uep.wap.model.Order;
+import com.uep.wap.repository.OrderLineRepository;
 import com.uep.wap.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,15 +11,15 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 
     @Autowired
-    private OrderRepository OrderRepository;
+    private static OrderRepository orderRepository;
 
-    public void addOrder(OrderDTO OrderDTO) {
-        Order Order = new Order();
-        Order.getStatus(OrderDTO.getStatus());
-        OrderRepository.save(Order);
+    public void addOrder(OrderDTO orderDTO) {
+        Order order = new Order();
+        order.setStatus(orderDTO.getStatus());
+        orderRepository.save(order);
         System.out.println("Status checked");
     }
 
-    public Iterable<Order> getAllOrders() { return OrderRepository.findAll(); }
+    public static Iterable<Order> getAllOrders() { return orderRepository.findAll(); }
 
 }
