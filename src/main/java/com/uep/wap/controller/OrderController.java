@@ -16,10 +16,10 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping(path = "/orders")
-    public Iterable<Order> getAllOrders(){
-        return orderService.getAllOrders();
-    }
+//    @GetMapping(path = "/orders")
+//    public Iterable<Order> getAllOrders(){
+//        return orderService.getAllOrders();
+//    }
 
 
 }
