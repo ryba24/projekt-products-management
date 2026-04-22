@@ -2,22 +2,24 @@ package com.uep.wap.dto;
 
 public class InventoryItemDTO {
 
-    private String name;
-    private Integer points;
+    private Long id;
+    private Integer quantity;
+    private Integer reorderThreshold;
+    private Long productId;
+    private Long warehouseId;
 
-    public String getName() {
-        return name;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public Integer getQuantity() { return quantity; }
+    public void setQuantity(Integer quantity) { this.quantity = quantity; }
 
-    public Integer getPoints() {
-        return points;
-    }
+    public Integer getReorderThreshold() { return reorderThreshold; }
+    public void setReorderThreshold(Integer reorderThreshold) { this.reorderThreshold = reorderThreshold; }
 
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
+    public Long getProductId() { return productId; }
+    public void setProductId(Long productId) { this.productId = productId; }
+
+    public Long getWarehouseId() { return warehouseId; }
+    public void setWarehouseId(Long warehouseId) { this.warehouseId = warehouseId; }
 }

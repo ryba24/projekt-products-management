@@ -2,22 +2,20 @@ package com.uep.wap.dto;
 
 public class StockTransferLineDTO {
 
-    private String name;
-    private Integer points;
+    private Long id;
+    private Integer quantity;
+    private Long transferId;
+    private Long productId;
 
-    public String getName() {
-        return name;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public Integer getQuantity() { return quantity; }
+    public void setQuantity(Integer quantity) { this.quantity = quantity; }
 
-    public Integer getPoints() {
-        return points;
-    }
+    public Long getTransferId() { return transferId; }
+    public void setTransferId(Long transferId) { this.transferId = transferId; }
 
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
+    public Long getProductId() { return productId; }
+    public void setProductId(Long productId) { this.productId = productId; }
 }

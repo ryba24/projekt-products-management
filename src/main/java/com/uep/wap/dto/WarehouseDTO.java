@@ -2,22 +2,20 @@ package com.uep.wap.dto;
 
 public class WarehouseDTO {
 
+    private Long id;
     private String name;
-    private Integer points;
+    private String location;
+    private Integer capacity;
 
-    public String getName() {
-        return name;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public Integer getPoints() {
-        return points;
-    }
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
 
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
+    public Integer getCapacity() { return capacity; }
+    public void setCapacity(Integer capacity) { this.capacity = capacity; }
 }

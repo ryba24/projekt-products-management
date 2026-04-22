@@ -1,23 +1,27 @@
 package com.uep.wap.dto;
 
+import com.uep.wap.model.RoleType;
+
 public class UserDTO {
 
-    private String name;
-    private Integer points;
+    private Long id;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private RoleType role;
 
-    public String getName() {
-        return name;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public Integer getPoints() {
-        return points;
-    }
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
 
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public RoleType getRole() { return role; }
+    public void setRole(RoleType role) { this.role = role; }
 }
