@@ -23,13 +23,34 @@ public class WarehouseService {
         return result;
     }
 
+    public WarehouseDTO getById(Long id) {
+        Warehouse warehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Warehouse not found with id: " + id));
+        return toDTO(warehouse);
+    }
+
     public WarehouseDTO create(WarehouseDTO dto) {
         Warehouse warehouse = new Warehouse();
         warehouse.setName(dto.getName());
         warehouse.setLocation(dto.getLocation());
         warehouse.setCapacity(dto.getCapacity());
-        Warehouse saved = warehouseRepository.save(warehouse);
-        return toDTO(saved);
+        return toDTO(warehouseRepository.save(warehouse));
+    }
+
+    public WarehouseDTO update(Long id, WarehouseDTO dto) {
+        Warehouse warehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Warehouse not found with id: " + id));
+        if (dto.getName()     != null) warehouse.setName(dto.getName());
+        if (dto.getLocation() != null) warehouse.setLocation(dto.getLocation());
+        if (dto.getCapacity() != null) warehouse.setCapacity(dto.getCapacity());
+        return toDTO(warehouseRepository.save(warehouse));
+    }
+
+    public void delete(Long id) {
+        if (!warehouseRepository.existsById(id)) {
+            throw new RuntimeException("Warehouse not found with id: " + id);
+        }
+        warehouseRepository.deleteById(id);
     }
 
     private WarehouseDTO toDTO(Warehouse warehouse) {

@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StockTransferRepository extends CrudRepository<StockTransfer, Integer> {
+public interface StockTransferRepository extends CrudRepository<StockTransfer, Long> {
 }

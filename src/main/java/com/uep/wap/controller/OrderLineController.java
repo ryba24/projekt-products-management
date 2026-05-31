@@ -1,10 +1,11 @@
 package com.uep.wap.controller;
 
-import com.uep.wap.model.OrderLine;
+import com.uep.wap.dto.OrderLineDTO;
 import com.uep.wap.service.OrderLineService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -17,9 +18,7 @@ public class OrderLineController {
     }
 
     @GetMapping(path = "/orderLines")
-    public Iterable<OrderLine> getAllOrderLines(){
-        return orderLineService.getAllOrderLines();
+    public ResponseEntity<List<OrderLineDTO>> getAllOrderLines() {
+        return ResponseEntity.ok(orderLineService.getAllOrderLines());
     }
-
-
 }

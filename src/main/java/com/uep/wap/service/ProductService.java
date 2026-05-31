@@ -29,7 +29,7 @@ public class ProductService {
     }
 
     public ProductDTO getById(Long id) {
-        Product product = productRepository.findById(Math.toIntExact(id))
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
         return toDTO(product);
     }
@@ -42,7 +42,7 @@ public class ProductService {
         product.setActive(dto.getActive());
         product.setMinStockThreshold(dto.getMinStockThreshold());
         if (dto.getCategoryId() != null) {
-            Category category = categoryRepository.findById(Math.toIntExact(dto.getCategoryId()))
+            Category category = categoryRepository.findById(dto.getCategoryId())
                     .orElseThrow(() -> new RuntimeException("Category not found with id: " + dto.getCategoryId()));
             product.setCategory(category);
         }
@@ -51,7 +51,7 @@ public class ProductService {
     }
 
     public ProductDTO update(Long id, ProductDTO dto) {
-        Product product = productRepository.findById(Math.toIntExact(id))
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
@@ -59,7 +59,7 @@ public class ProductService {
         product.setActive(dto.getActive());
         product.setMinStockThreshold(dto.getMinStockThreshold());
         if (dto.getCategoryId() != null) {
-            Category category = categoryRepository.findById(Math.toIntExact(dto.getCategoryId()))
+            Category category = categoryRepository.findById(dto.getCategoryId())
                     .orElseThrow(() -> new RuntimeException("Category not found with id: " + dto.getCategoryId()));
             product.setCategory(category);
         }
@@ -68,7 +68,7 @@ public class ProductService {
     }
 
     public void delete(Long id) {
-        productRepository.deleteById(Math.toIntExact(id));
+        productRepository.deleteById(id);
     }
 
     private ProductDTO toDTO(Product product) {

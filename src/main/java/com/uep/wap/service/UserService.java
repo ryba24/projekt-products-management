@@ -23,16 +23,37 @@ public class UserService {
         return result;
     }
 
+    public UserDTO getById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        return toDTO(user);
+    }
+
     public UserDTO create(UserDTO dto) {
         User user = new User();
         user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setRole(dto.getRole());
-        // Password hash must be set externally (e.g. via security layer); placeholder kept empty
         user.setPasswordHash("");
-        User saved = userRepository.save(user);
-        return toDTO(saved);
+        return toDTO(userRepository.save(user));
+    }
+
+    public UserDTO update(Long id, UserDTO dto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        if (dto.getEmail()     != null) user.setEmail(dto.getEmail());
+        if (dto.getFirstName() != null) user.setFirstName(dto.getFirstName());
+        if (dto.getLastName()  != null) user.setLastName(dto.getLastName());
+        if (dto.getRole()      != null) user.setRole(dto.getRole());
+        return toDTO(userRepository.save(user));
+    }
+
+    public void delete(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+        userRepository.deleteById(id);
     }
 
     private UserDTO toDTO(User user) {

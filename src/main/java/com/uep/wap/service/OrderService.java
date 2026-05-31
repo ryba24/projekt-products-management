@@ -40,14 +40,20 @@ public class OrderService {
         return result;
     }
 
+    public OrderDTO getById(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
+        return toDTO(order);
+    }
+
     public OrderDTO create(OrderDTO dto) {
         Order order = new Order();
-        order.setOrderDate(new Date());
+        order.setOrderDate(dto.getOrderDate() != null ? dto.getOrderDate() : new Date());
         order.setStatus(dto.getStatus());
         order.setPaymentStatus(dto.getPaymentStatus());
 
         if (dto.getCustomerId() != null) {
-            User customer = userRepository.findById(Math.toIntExact(dto.getCustomerId()))
+            User customer = userRepository.findById(dto.getCustomerId())
                     .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getCustomerId()));
             order.setCustomer(customer);
         }
@@ -56,7 +62,7 @@ public class OrderService {
 
         if (dto.getOrderLines() != null) {
             for (OrderLineDTO lineDTO : dto.getOrderLines()) {
-                Product product = productRepository.findById(Math.toIntExact(lineDTO.getProductId()))
+                Product product = productRepository.findById(lineDTO.getProductId())
                         .orElseThrow(() -> new RuntimeException("Product not found with id: " + lineDTO.getProductId()));
                 OrderLine line = new OrderLine();
                 line.setQuantity(lineDTO.getQuantity());
@@ -68,7 +74,55 @@ public class OrderService {
             }
         }
 
-        return toDTO(saved);
+        return toDTO(orderRepository.findById(saved.getId()).orElse(saved));
+    }
+
+    public OrderDTO update(Long id, OrderDTO dto) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
+
+        if (dto.getStatus()        != null) order.setStatus(dto.getStatus());
+        if (dto.getPaymentStatus() != null) order.setPaymentStatus(dto.getPaymentStatus());
+        if (dto.getOrderDate()     != null) order.setOrderDate(dto.getOrderDate());
+
+        if (dto.getCustomerId() != null) {
+            User customer = userRepository.findById(dto.getCustomerId())
+                    .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getCustomerId()));
+            order.setCustomer(customer);
+        }
+
+        // If order lines are provided, replace them entirely
+        if (dto.getOrderLines() != null) {
+            // Delete existing lines
+            if (order.getOrderLines() != null) {
+                for (OrderLine existing : order.getOrderLines()) {
+                    orderLineRepository.deleteById(existing.getId());
+                }
+            }
+            // Save new lines
+            List<OrderLine> newLines = new ArrayList<>();
+            for (OrderLineDTO lineDTO : dto.getOrderLines()) {
+                Product product = productRepository.findById(lineDTO.getProductId())
+                        .orElseThrow(() -> new RuntimeException("Product not found with id: " + lineDTO.getProductId()));
+                OrderLine line = new OrderLine();
+                line.setQuantity(lineDTO.getQuantity());
+                line.setUnitPrice(lineDTO.getUnitPrice());
+                line.setSubtotal(lineDTO.getSubtotal());
+                line.setOrder(order);
+                line.setProduct(product);
+                newLines.add(orderLineRepository.save(line));
+            }
+            order.setOrderLines(newLines);
+        }
+
+        return toDTO(orderRepository.save(order));
+    }
+
+    public void delete(Long id) {
+        if (!orderRepository.existsById(id)) {
+            throw new RuntimeException("Order not found with id: " + id);
+        }
+        orderRepository.deleteById(id);
     }
 
     private OrderDTO toDTO(Order order) {
@@ -90,7 +144,9 @@ public class OrderService {
                 lineDTO.setUnitPrice(line.getUnitPrice());
                 lineDTO.setSubtotal(line.getSubtotal());
                 lineDTO.setOrderId(order.getId());
-                lineDTO.setProductId(line.getProduct().getId());
+                if (line.getProduct() != null) {
+                    lineDTO.setProductId(line.getProduct().getId());
+                }
                 lineDTOs.add(lineDTO);
             }
         }

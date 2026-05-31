@@ -23,12 +23,32 @@ public class CategoryService {
         return result;
     }
 
+    public CategoryDTO getById(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+        return toDTO(category);
+    }
+
     public CategoryDTO create(CategoryDTO dto) {
         Category category = new Category();
         category.setName(dto.getName());
         category.setDescription(dto.getDescription());
-        Category saved = categoryRepository.save(category);
-        return toDTO(saved);
+        return toDTO(categoryRepository.save(category));
+    }
+
+    public CategoryDTO update(Long id, CategoryDTO dto) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+        if (dto.getName()        != null) category.setName(dto.getName());
+        if (dto.getDescription() != null) category.setDescription(dto.getDescription());
+        return toDTO(categoryRepository.save(category));
+    }
+
+    public void delete(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new RuntimeException("Category not found with id: " + id);
+        }
+        categoryRepository.deleteById(id);
     }
 
     private CategoryDTO toDTO(Category category) {

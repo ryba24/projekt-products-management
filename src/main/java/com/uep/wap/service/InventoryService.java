@@ -33,10 +33,16 @@ public class InventoryService {
         return result;
     }
 
+    public InventoryItemDTO getById(Long id) {
+        InventoryItem item = inventoryItemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Inventory item not found with id: " + id));
+        return toDTO(item);
+    }
+
     public InventoryItemDTO create(InventoryItemDTO dto) {
-        Product product = productRepository.findById(Math.toIntExact(dto.getProductId()))
+        Product product = productRepository.findById(dto.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + dto.getProductId()));
-        Warehouse warehouse = warehouseRepository.findById(Math.toIntExact(dto.getWarehouseId()))
+        Warehouse warehouse = warehouseRepository.findById(dto.getWarehouseId())
                 .orElseThrow(() -> new RuntimeException("Warehouse not found with id: " + dto.getWarehouseId()));
 
         InventoryItem item = new InventoryItem();
@@ -44,9 +50,32 @@ public class InventoryService {
         item.setReorderThreshold(dto.getReorderThreshold());
         item.setProduct(product);
         item.setWarehouse(warehouse);
+        return toDTO(inventoryItemRepository.save(item));
+    }
 
-        InventoryItem saved = inventoryItemRepository.save(item);
-        return toDTO(saved);
+    public InventoryItemDTO update(Long id, InventoryItemDTO dto) {
+        InventoryItem item = inventoryItemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Inventory item not found with id: " + id));
+        if (dto.getQuantity()         != null) item.setQuantity(dto.getQuantity());
+        if (dto.getReorderThreshold() != null) item.setReorderThreshold(dto.getReorderThreshold());
+        if (dto.getProductId() != null) {
+            Product product = productRepository.findById(dto.getProductId())
+                    .orElseThrow(() -> new RuntimeException("Product not found with id: " + dto.getProductId()));
+            item.setProduct(product);
+        }
+        if (dto.getWarehouseId() != null) {
+            Warehouse warehouse = warehouseRepository.findById(dto.getWarehouseId())
+                    .orElseThrow(() -> new RuntimeException("Warehouse not found with id: " + dto.getWarehouseId()));
+            item.setWarehouse(warehouse);
+        }
+        return toDTO(inventoryItemRepository.save(item));
+    }
+
+    public void delete(Long id) {
+        if (!inventoryItemRepository.existsById(id)) {
+            throw new RuntimeException("Inventory item not found with id: " + id);
+        }
+        inventoryItemRepository.deleteById(id);
     }
 
     private InventoryItemDTO toDTO(InventoryItem item) {
